@@ -21,10 +21,11 @@ Target: 12–15 min. Slides for the first 5 min, live code for 6 min, enterprise
 | 2:30 | 5 | Draw the loop. Stress stop conditions. |
 | 3:30 | 6–7 | Five parts; what is NOT an agent. |
 | 5:00 | 8 | **Switch to screen.** Run `python workflow.py` — fixed steps. |
-| 5:45 | 9 | **Live code** the loop in `agent_starter.py` (checkpoints below). |
-| 10:30 | 9 | Run `python basic_agent.py` on A-7781, then A-7790. Narrate the tool calls. |
-| 11:30 | 10–12 | Identity, tenancy, accountability — one minute each. |
-| 14:00 | 13–14 | Recap, next episode, repo. |
+| 5:45 | 9 | "Building your first agent" — four steps; we type only step 3. |
+| 6:15 | 10 | **Live code** the loop in `agent_starter.py` (checkpoints below). |
+| 10:30 | 10 | Run `python basic_agent.py` on A-7781, then A-7790. Narrate the tool calls. |
+| 11:30 | 11–13 | Identity, tenancy, accountability — one minute each. |
+| 14:00 | 14–15 | Recap, next episode, repo. |
 
 ## Live-coding checkpoints (type these, in this order)
 
@@ -81,5 +82,5 @@ python agent_starter.py "Customer 2210 wants a refund for order A-7790, changed 
 ## After recording
 
 - [ ] Commit `agent_starter.py` with the TODOs restored (`git checkout -- code/agent_starter.py`)
-- [ ] Cut 3 clips: the definition (slide 3), step 2 "the model chose" moment, the identity question (slide 10)
+- [ ] Cut 3 clips: the definition (slide 3), step 2 "the model chose" moment, the identity question (slide 11)
 - [ ] LinkedIn post: the spectrum slide as the image
