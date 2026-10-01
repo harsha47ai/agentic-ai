@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "trade-orders": {
+      "command": "/ABSOLUTE/PATH/TO/agentic-enterprise/02-first-mcp-server/code/.venv/bin/python",
+      "args": ["/ABSOLUTE/PATH/TO/agentic-enterprise/02-first-mcp-server/code/server.py"]
+    }
+  }
+}

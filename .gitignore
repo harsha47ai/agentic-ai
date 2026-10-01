@@ -4,3 +4,4 @@ __pycache__/
 .env
 .DS_Store
 *.pptx~
+trade_orders.db
