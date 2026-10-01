@@ -1,6 +1,6 @@
-# The Agentic Enterprise
+# Arthashastra Learning — The Agentic Enterprise
 
-Code, slides and scripts for the YouTube series **The Agentic Enterprise** — building agentic AI that survives real enterprise software: tenancy, permissions, data and ROI included.
+Code, slides and scripts for **The Agentic Enterprise**, the YouTube series from **Arthashastra Learning** — building agentic AI that survives real enterprise software: tenancy, permissions, data and ROI included.
 
 | # | Episode | Folder |
 | --- | --- | --- |

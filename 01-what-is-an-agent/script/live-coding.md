@@ -1,4 +1,4 @@
-# Episode 1 — live-coding run sheet
+# Arthashastra Learning · Episode 1 — live-coding run sheet
 
 Target: 12–15 min. Slides for the first 5 min, live code for 6 min, enterprise breakpoints for 3 min, recap 1 min.
 
