@@ -50,5 +50,9 @@ done <<'ISSUES'
 22|Why I shut down a $200K startup — and what I'd build with agents now|sell|Reserve
 23|Agents for trade and supply chain: 5 use cases that pay back|sell|Reserve
 24|Context engineering: the skill that replaced prompt engineering|build|Reserve
+25|Guardrails, the basics: input, output and tool-call checks every agent needs|run|Reserve
+26|Token costs at enterprise scale: forecasting, caps and chargeback per tenant|sell|Reserve
+27|DevOps with agents: CI/CD, incident response and infra changes with a human gate|build|Reserve
+28|Data engineering with agents: pipelines, data quality and schema changes|build|Reserve
 ISSUES
-echo "Created 24 episode issues in $REPO"
+echo "Created 28 episode issues in $REPO"
