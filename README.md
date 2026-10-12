@@ -8,9 +8,9 @@ An open-source **agentic ERP**, built in public one episode at a time. Every mod
 
 | # | Episode | Folder | Status |
 | --- | --- | --- | --- |
-| 1 | What an AI agent actually is — and isn't — in enterprise software | `episodes/01-what-is-an-agent/` | slides |
-| 2 | Build your first AI agent: a sales-returns agent for the ERP | `episodes/02-build-your-first-agent/` | code + run sheet |
-| 3 | Build your first MCP server for the ERP (Inventory · Sales · Finance) | `episodes/03-first-mcp-server/` | code + run sheet |
+| 1 | What an AI agent actually is — and isn't — in enterprise software | `episodes/01-what-is-an-agent/` | slides ✓ |
+| 2 | Build your first AI agent: a sales-returns agent for the ERP | `episodes/02-build-your-first-agent/` | slides ✓ · code ✓ · run sheet ✓ |
+| 3 | Build your first MCP server for the ERP (Inventory · Sales · Finance) | `episodes/03-first-mcp-server/` | slides ✓ · code ✓ · run sheet ✓ |
 | 4 | Where agents sit in a multi-tenant ERP | `episodes/04-…` | planned |
 
 Each episode folder has `slides/`, `script/` (the live-coding run sheet), `code/` and `assets/`. The full 28-episode roadmap is in the Issues tab (`scripts/create_issues.sh` creates them).
@@ -35,6 +35,10 @@ docker-compose.yml   Postgres 16
 | HR | employees | leave approvals (reserve) |
 
 Stack: Python 3.11, SQLAlchemy, Postgres, Claude API, MCP. MIT licence.
+
+## Brand
+
+`brand/` holds the "learn with harsha" slide theme (colours, fonts, pptxgenjs helper). See `brand/README.md`.
 
 ## Links
 
