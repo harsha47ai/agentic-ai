@@ -16,9 +16,9 @@ function make(pres) {
 
   // wordmark: "learn with harsha" + orange square
   T.wordmark = (s, x, y, size, dark) => {
-    s.addText([{ text: "learn with ", options: { color: dark ? WHITE : INK } }, { text: "harsha", options: { color: ORANGE } },
-               { text: "\u25A0", options: { color: ORANGE, fontSize: Math.round(size * 0.42) } }],
-      { x, y, w: 9, h: size / 72 * 1.3, fontFace: SANS, fontSize: size, bold: true, charSpacing: -2, isTextBox: true, margin: 0, valign: "middle" });
+    s.addText([{ text: "learn  with  ", options: { color: dark ? WHITE : INK } }, { text: "harsha", options: { color: ORANGE } },
+               { text: "  \u25A0", options: { color: ORANGE, fontSize: Math.round(size * 0.4) } }],
+      { x, y, w: 9, h: size / 72 * 1.4, fontFace: SANS, fontSize: size, bold: true, charSpacing: 1, isTextBox: true, margin: 0, valign: "middle" });
   };
 
   T.squares = (s, x, y, cell, gap, dark) => { // 3x3 motif, centre-left orange like the kit
@@ -49,9 +49,9 @@ function make(pres) {
     const s = pres.addSlide();
     s.background = { data: gridW };
     if (notes) s.addNotes(notes);
-    T.wordmark(s, 0.5, 0.32, 14, false);
-    if (kicker) T.kicker(s, kicker, 0.5, 0.78, false);
-    if (title) s.addText(title, { x: 0.5, y: 1.08, w: 9, h: 0.7, fontFace: SANS, fontSize: title.length > 38 ? 23 : 28, bold: true, charSpacing: -1, color: INK, isTextBox: true, margin: 0, valign: "middle" });
+    T.wordmark(s, 0.5, 0.3, 14, false);
+    if (kicker) T.kicker(s, kicker, 0.5, 0.88, false);
+    if (title) s.addText(title, { x: 0.5, y: 1.18, w: 9, h: 0.7, fontFace: SANS, fontSize: title.length > 38 ? 23 : 28, bold: true, charSpacing: -1, color: INK, isTextBox: true, margin: 0, valign: "middle" });
     T.footer(s, footer || "Arthashastra Learning · The Agentic Enterprise", false);
     return s;
   };
@@ -59,8 +59,8 @@ function make(pres) {
     const s = T.dark(notes);
     T.squares(s, 7.55, 0.5, 0.3, 0.07, true);
     T.kicker(s, `Episode ${ep}`, 0.6, 0.6, true);
-    T.wordmark(s, 0.6, 1.25, 44, true);
-    s.addText(title, { x: 0.6, y: 2.25, w: 8.4, h: 1.5, fontFace: SANS, fontSize: 30, bold: true, charSpacing: -1, color: WHITE, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.05 });
+    T.wordmark(s, 0.6, 1.15, 44, true);
+    s.addText(title, { x: 0.6, y: 2.4, w: 8.4, h: 1.5, fontFace: SANS, fontSize: 30, bold: true, charSpacing: -1, color: WHITE, isTextBox: true, margin: 0, valign: "top", lineSpacingMultiple: 1.05 });
     s.addShape(pres.shapes.LINE, { x: 0.6, y: 4.3, w: 8.8, h: 0, line: { color: LINE_DK, width: 0.75 } });
     s.addText("Harsha Pasumarthi", { x: 0.6, y: 4.45, w: 5, h: 0.3, fontFace: SANS, fontSize: 14, bold: true, color: WHITE, isTextBox: true, margin: 0 });
     s.addText(subtitle || "Founder & CEO, Arthashastra Intelligence", { x: 0.6, y: 4.75, w: 6, h: 0.3, fontFace: SANS, fontSize: 11, color: GREY_DK, isTextBox: true, margin: 0 });
@@ -69,7 +69,7 @@ function make(pres) {
   };
   T.closing = (title, lines, nextText, notes) => {
     const s = T.dark(notes);
-    T.wordmark(s, 0.6, 0.45, 18, true);
+    T.wordmark(s, 0.6, 0.42, 18, true);
     T.squares(s, 7.55, 0.5, 0.3, 0.07, true);
     s.addText(title, { x: 0.6, y: 1.2, w: 8.8, h: 0.6, fontFace: SANS, fontSize: 28, bold: true, charSpacing: -1, color: WHITE, isTextBox: true, margin: 0, valign: "middle" });
     lines.forEach(([h, d], i) => {
