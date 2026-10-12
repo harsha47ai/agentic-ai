@@ -1,11 +1,11 @@
 """
-Episode 2 — the Episode 1 agent, with tools coming from an MCP server instead of hardcoded Python.
+Episode 3 — the Episode 2 agent loop, with tools coming from an MCP server instead of hardcoded Python.
 
-The loop is identical to basic_agent.py. Only two things change:
+The loop is identical to episodes/02-build-your-first-agent/code/returns_agent.py. Only two things change:
   1. TOOLS   come from   session.list_tools()
   2. HANDLERS become     session.call_tool(name, args)
 
-Run:  python agent_mcp.py "Which shipments to Chennai are delayed, and what duty applies to shrimp?"
+Run:  python agent_mcp.py "Which open sales orders cannot ship because stock is short, and do those customers have overdue invoices?"
 """
 import asyncio
 import json
@@ -20,8 +20,8 @@ MODEL = "claude-sonnet-4-5"
 MAX_STEPS = 8
 SERVER = StdioServerParameters(command=sys.executable, args=[str(Path(__file__).parent / "server.py")])
 
-SYSTEM = """You are a trade-operations assistant. Answer using the tools; never guess order or duty data.
-Keep answers short and cite order/shipment ids you used."""
+SYSTEM = """You are an operations assistant inside the company ERP. Answer using the tools; never guess stock, order or invoice data.
+Keep answers short and cite the order, SKU and invoice ids you used."""
 
 
 async def run(goal: str) -> str:
@@ -55,5 +55,5 @@ async def run(goal: str) -> str:
 
 
 if __name__ == "__main__":
-    goal = " ".join(sys.argv[1:]) or "Which shipments to Chennai are delayed by 4 days or more? And what duty applies to frozen shrimp?"
+    goal = " ".join(sys.argv[1:]) or "Which open sales orders cannot ship because stock is short, and do those customers have overdue invoices?"
     print("\nFINAL:", asyncio.run(run(goal)))

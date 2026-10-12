@@ -5,3 +5,6 @@ __pycache__/
 .DS_Store
 *.pptx~
 trade_orders.db
+.env
+*.db
+.pytest_cache/

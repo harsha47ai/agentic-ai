@@ -27,9 +27,9 @@ while IFS='|' read -r num title pillar month; do
 - [ ] LinkedIn post + newsletter mention"
 done <<'ISSUES'
 1|What an AI agent actually is — and isn't — in enterprise software|architect|Oct
-2|Build your first MCP server for an enterprise data source|build|Oct
-3|An export-compliance agent in 20 minutes|build|Oct
-4|Where agents sit in a multi-tenant SaaS|architect|Oct
+2|Build your first AI agent: a sales-returns agent for the ERP|build|Oct
+3|Build your first MCP server for the ERP (Inventory, Sales, Finance)|build|Oct
+4|Where agents sit in a multi-tenant ERP|architect|Oct
 5|Single agent vs multi-agent — when each is the right call|architect|Nov
 6|Procurement agent, Part 1: supplier search with MCP tools|build|Nov
 7|Procurement agent, Parts 2–3: quote comparison and approvals with RBAC|build|Nov
@@ -48,11 +48,11 @@ done <<'ISSUES'
 20|Agents over messy enterprise data: the data engineer's view|build|Reserve
 21|Writing ADRs for agent systems (with a real example)|architect|Reserve
 22|Why I shut down a $200K startup — and what I'd build with agents now|sell|Reserve
-23|Agents for trade and supply chain: 5 use cases that pay back|sell|Reserve
+23|An ERP module in a day: HR leave approvals with an agent|build|Reserve
 24|Context engineering: the skill that replaced prompt engineering|build|Reserve
 25|Guardrails, the basics: input, output and tool-call checks every agent needs|run|Reserve
 26|Token costs at enterprise scale: forecasting, caps and chargeback per tenant|sell|Reserve
 27|DevOps with agents: CI/CD, incident response and infra changes with a human gate|build|Reserve
 28|Data engineering with agents: pipelines, data quality and schema changes|build|Reserve
 ISSUES
-echo "Created 28 episode issues in $REPO"
+echo "Created 29 episode issues in $REPO"

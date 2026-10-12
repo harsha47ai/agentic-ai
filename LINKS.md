@@ -1,8 +1,10 @@
 # Links and reading list
 
+ERP references: ERPNext docs (https://docs.frappe.io/erpnext), Odoo developer docs (https://www.odoo.com/documentation), and the classic order-to-cash / procure-to-pay / record-to-report process maps.
+
 Grouped by episode. Verify each before citing on camera — docs move.
 
-## Episode 1 — What an agent is
+## Episodes 1–2 — What an agent is / build your first agent
 
 - Anthropic, *Building effective agents* — https://www.anthropic.com/engineering/building-effective-agents
 - Anthropic, *Effective context engineering for AI agents* — https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
@@ -11,7 +13,7 @@ Grouped by episode. Verify each before citing on camera — docs move.
 - Lilian Weng, *LLM Powered Autonomous Agents* — https://lilianweng.github.io/posts/2023-06-23-agent/
 - ReAct paper (Yao et al., 2022) — https://arxiv.org/abs/2210.03629
 
-## Episode 2 — MCP
+## Episode 3 — MCP
 
 - MCP specification — https://modelcontextprotocol.io/specification
 - MCP Python SDK — https://github.com/modelcontextprotocol/python-sdk

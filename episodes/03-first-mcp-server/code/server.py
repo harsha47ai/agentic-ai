@@ -1,79 +1,83 @@
 """
-Episode 2 — your first MCP server for an enterprise data source.
+Episode 3 — your first MCP server: three read-only tools over the ERP database.
 
-Exposes three READ-ONLY tools over a SQLite order-management DB (see seed_db.py).
+    Inventory  get_item_stock(sku)
+    Sales      search_sales_orders(status, customer_id, limit)
+    Finance    get_invoice(invoice_id)
+
 Any MCP client — Claude Desktop, the Inspector, or our own agent (agent_mcp.py) — can call them.
-
-Run:         python server.py                      (stdio transport)
-Inspect:     npx @modelcontextprotocol/inspector python server.py
+Run:       python server.py                      (stdio)
+Inspect:   npx @modelcontextprotocol/inspector python server.py
 """
 import json
-import sqlite3
+import os
+import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 from mcp.server.fastmcp import FastMCP
+from sqlalchemy import select
 
-DB = Path(__file__).parent / "trade_orders.db"
-MAX_ROWS = 25  # enterprise rule: the model will ask for everything; never hand it everything
+from erp.db import get_engine
+from erp.schema import customers, invoices, items, sales_order_lines, sales_orders, stock_levels, warehouses
 
-mcp = FastMCP("trade-orders")
-
-
-def _query(sql: str, params: tuple = ()) -> list[dict]:
-    con = sqlite3.connect(f"file:{DB}?mode=ro", uri=True)  # read-only connection, by design
-    con.row_factory = sqlite3.Row
-    try:
-        return [dict(r) for r in con.execute(sql, params).fetchall()]
-    finally:
-        con.close()
+COMPANY = os.environ.get("ERP_COMPANY", "ACME")  # tenant filter — set by the deployment, never by the model
+MAX_ROWS = 25                                    # the model will ask for everything; the server decides
+engine = get_engine()
+mcp = FastMCP("erp")
 
 
-@mcp.tool()
-def get_order(order_id: str) -> str:
-    """Fetch one order by its id (format 'A-7001') with its HS code description and any linked shipment.
-    Use this when the user names a specific order. Returns JSON, or an error field if not found."""
-    rows = _query(
-        """SELECT o.*, h.description AS hs_description, h.basic_duty_pct,
-                  s.shipment_id, s.origin_port, s.dest_port, s.eta, s.status AS shipment_status, s.delay_days
-           FROM orders o JOIN hs_codes h ON h.code = o.hs_code
-           LEFT JOIN shipments s ON s.order_id = o.order_id
-           WHERE o.order_id = ?""",
-        (order_id.strip().upper(),),
-    )
-    return json.dumps(rows[0] if rows else {"error": f"order {order_id} not found"}, indent=2)
+def _j(obj) -> str:
+    return json.dumps(obj, default=str, indent=2)
 
 
 @mcp.tool()
-def search_shipments(status: str = "", dest_port: str = "", min_delay_days: int = 0, limit: int = 10) -> str:
-    """Search shipments. Filters are optional and combine with AND:
-    status in {booked, in_transit, at_port, customs_hold, delivered}; dest_port e.g. 'Chennai';
-    min_delay_days to find delayed shipments. limit is capped at 25. Returns a JSON list, newest ETA first."""
+def get_item_stock(sku: str) -> str:
+    """Inventory: stock on hand and reserved for one SKU (e.g. 'WH-204') across all warehouses, plus its reorder level.
+    Use when asked whether something is in stock, how much is available, or whether it needs reordering."""
+    with engine.connect() as con:
+        item = con.execute(select(items).where(items.c.sku == sku.strip().upper(), items.c.company_id == COMPANY)).mappings().first()
+        if not item:
+            return _j({"error": f"item {sku} not found"})
+        rows = con.execute(select(warehouses.c.id, warehouses.c.name, stock_levels.c.on_hand, stock_levels.c.reserved)
+                           .join(stock_levels, stock_levels.c.warehouse_id == warehouses.c.id)
+                           .where(stock_levels.c.sku == item["sku"])).mappings().all()
+    total = sum(r["on_hand"] - r["reserved"] for r in rows)
+    return _j({"sku": item["sku"], "name": item["name"], "reorder_level": item["reorder_level"], "available_total": total,
+               "needs_reorder": total < (item["reorder_level"] or 0), "warehouses": [dict(r) for r in rows]})
+
+
+@mcp.tool()
+def search_sales_orders(status: str = "", customer_id: str = "", limit: int = 10) -> str:
+    """Sales: search sales orders. Optional filters combine with AND: status in {draft, confirmed, delivered, closed};
+    customer_id like 'C-1042'. limit is capped at 25. Returns newest first with customer name, total and line count."""
     limit = max(1, min(int(limit), MAX_ROWS))
-    where, params = ["1=1"], []
+    q = (select(sales_orders.c.id, sales_orders.c.customer_id, customers.c.name.label("customer"), sales_orders.c.order_date,
+                sales_orders.c.status, sales_orders.c.total, sales_orders.c.warehouse_id)
+         .join(customers, customers.c.id == sales_orders.c.customer_id).where(sales_orders.c.company_id == COMPANY))
     if status:
-        where.append("s.status = ?"); params.append(status.strip().lower())
-    if dest_port:
-        where.append("LOWER(s.dest_port) = ?"); params.append(dest_port.strip().lower())
-    if min_delay_days:
-        where.append("s.delay_days >= ?"); params.append(int(min_delay_days))
-    rows = _query(
-        f"""SELECT s.shipment_id, s.order_id, o.customer_id, s.origin_port, s.dest_port, s.eta, s.status, s.delay_days
-            FROM shipments s JOIN orders o ON o.order_id = s.order_id
-            WHERE {' AND '.join(where)} ORDER BY s.eta DESC LIMIT ?""",
-        (*params, limit),
-    )
-    return json.dumps({"count": len(rows), "limit": limit, "results": rows}, indent=2)
+        q = q.where(sales_orders.c.status == status.strip().lower())
+    if customer_id:
+        q = q.where(sales_orders.c.customer_id == customer_id.strip().upper())
+    q = q.order_by(sales_orders.c.order_date.desc()).limit(limit)
+    with engine.connect() as con:
+        rows = [dict(r) for r in con.execute(q).mappings().all()]
+        for r in rows:
+            r["lines"] = [dict(l) for l in con.execute(select(sales_order_lines.c.sku, sales_order_lines.c.qty)
+                                                      .where(sales_order_lines.c.order_id == r["id"])).mappings().all()]
+    return _j({"count": len(rows), "limit": limit, "results": rows})
 
 
 @mcp.tool()
-def lookup_hs_code(description: str) -> str:
-    """Find HS codes whose description matches a product keyword (e.g. 'shrimp', 'rice', 'laptop').
-    Returns code, description and basic customs duty %. Use before answering any duty or classification question."""
-    rows = _query(
-        "SELECT code, description, basic_duty_pct FROM hs_codes WHERE LOWER(description) LIKE ? LIMIT ?",
-        (f"%{description.strip().lower()}%", MAX_ROWS),
-    )
-    return json.dumps(rows if rows else {"error": f"no HS code matches '{description}'"}, indent=2)
+def get_invoice(invoice_id: str) -> str:
+    """Finance: one invoice (e.g. 'INV-30117') with amount, paid, outstanding, due date and status (open / paid / overdue).
+    Use for any question about what a customer owes or whether an invoice is overdue."""
+    with engine.connect() as con:
+        inv = con.execute(select(invoices).where(invoices.c.id == invoice_id.strip().upper(), invoices.c.company_id == COMPANY)).mappings().first()
+    if not inv:
+        return _j({"error": f"invoice {invoice_id} not found"})
+    d = dict(inv); d["outstanding"] = float(d["amount"]) - float(d["paid"])
+    return _j(d)
 
 
 if __name__ == "__main__":

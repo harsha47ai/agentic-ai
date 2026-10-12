@@ -1,13 +1,13 @@
-# Arthashastra Learning · Episode 2 — live-coding run sheet
+# Arthashastra Learning · Episode 3 — live-coding run sheet
 
 Target: 18–20 min. Slides 4 min, live code 9 min, two plug-ins 4 min, enterprise rules + recap 3 min.
 
 ## Before you hit record
 
-- [ ] `cd 02-first-mcp-server/code && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
-- [ ] `python seed_db.py` — confirm it prints `120 orders, 85 shipments`
+- [ ] `cd episodes/03-first-mcp-server/code && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
+- [ ] From the repo root: `docker compose up -d && python -m erp.seed` (see INSTRUCTIONS.md)
 - [ ] `node --version` ≥ 18 (for `npx @modelcontextprotocol/inspector`); run the Inspector once so npx has it cached
-- [ ] Claude Desktop installed; config entry from `claude_desktop_config.example.json` pasted with **absolute paths** and the venv python; Claude Desktop restarted and the hammer/tools icon shows `trade-orders` — do this BEFORE recording, it's the slowest step to debug
+- [ ] Claude Desktop installed; config entry from `claude_desktop_config.example.json` pasted with **absolute paths** and the venv python; Claude Desktop restarted and the hammer/tools icon shows `erp` — do this BEFORE recording, it's the slowest step to debug
 - [ ] `export ANTHROPIC_API_KEY=...` in the demo terminal — never on camera
 - [ ] Open `server_starter.py` in the editor, `server.py` in a hidden tab
 - [ ] Terminal ≥ 18pt, editor ≥ 16pt, notifications off
@@ -31,11 +31,13 @@ Target: 18–20 min. Slides 4 min, live code 9 min, two plug-ins 4 min, enterpri
 
 ## Live-coding checkpoints
 
+> The code for checkpoints 2–4 is in `server.py` (get_item_stock, search_sales_orders, get_invoice). Type them from there; the points to say aloud are below.
+
 **Checkpoint 1 — skeleton**
 ```python
 from mcp.server.fastmcp import FastMCP
 
-mcp = FastMCP("trade-orders")
+mcp = FastMCP("erp")
 
 if __name__ == "__main__":
     mcp.run()

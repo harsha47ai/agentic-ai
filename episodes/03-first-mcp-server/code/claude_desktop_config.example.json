@@ -1,8 +1,9 @@
 {
   "mcpServers": {
-    "trade-orders": {
-      "command": "/ABSOLUTE/PATH/TO/agentic-enterprise/02-first-mcp-server/code/.venv/bin/python",
-      "args": ["/ABSOLUTE/PATH/TO/agentic-enterprise/02-first-mcp-server/code/server.py"]
+    "erp": {
+      "command": "/ABSOLUTE/PATH/TO/agentic-enterprise/episodes/03-first-mcp-server/code/.venv/bin/python",
+      "env": {"DATABASE_URL": "postgresql+psycopg://erp:erp@localhost:5432/erp", "ERP_COMPANY": "ACME"},
+      "args": ["/ABSOLUTE/PATH/TO/agentic-enterprise/episodes/03-first-mcp-server/code/server.py"]
     }
   }
 }

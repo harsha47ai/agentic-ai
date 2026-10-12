@@ -1,20 +1,15 @@
-# Episode 2 code — your first MCP server
+# Episode 3 code — your first MCP server (over the ERP)
 
 | File | What it is |
 | --- | --- |
-| `seed_db.py` | Creates `trade_orders.db` (orders, shipments, hs_codes — 120 orders, 85 shipments). Run once. |
-| `server.py` | The MCP server: three read-only tools over the DB, stdio transport. |
-| `server_starter.py` | Live-coding version — DB helper pre-written, five TODOs. |
-| `agent_mcp.py` | Episode 1's agent loop, with tools discovered from the MCP server instead of hardcoded. |
-| `claude_desktop_config.example.json` | Entry to paste into Claude Desktop's config to use the server there. |
+| `server.py` | MCP server: three read-only tools over the ERP database — Inventory, Sales, Finance. |
+| `server_starter.py` | Live-coding version, five TODOs. |
+| `agent_mcp.py` | Episode 2's loop with tools discovered from the server instead of imported. |
+| `claude_desktop_config.example.json` | Paste into Claude Desktop's config (absolute paths, venv python). |
+
+Needs the ERP database seeded first — see `INSTRUCTIONS.md` at the repo root.
 
 ```bash
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python seed_db.py
-npx @modelcontextprotocol/inspector python server.py     # test tools in the browser UI
-export ANTHROPIC_API_KEY=sk-ant-...
-python agent_mcp.py "Which shipments to Chennai are delayed by 4+ days?"
+npx @modelcontextprotocol/inspector python server.py
+python agent_mcp.py "Which open sales orders cannot ship because stock is short, and do those customers have overdue invoices?"
 ```
-
-Claude Desktop config lives at `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS). Restart Claude Desktop after editing.
