@@ -116,7 +116,22 @@ T.cover("01", "What an AI agent actually is —\nand isn't — in enterprise sof
   T.callout(s, "RULE", "code decides before it runs; an agent decides as it runs. Use a workflow whenever the rules are known, an agent only when they aren't — and pay for it with limits, approvals and evals.", 0.5, 4.55, 9, 0.6);
 }
 
-// 9 where agents live in an ERP
+// 9 example: same problem four ways
+{
+  const s = T.light("One ERP problem, four ways. SCHEDULER: every night at 02:00 run reorder_check.py — for every item below reorder level, create a PO for the default qty at the default supplier. The scheduler decided WHEN; the script author decided WHAT, once, for all items forever. If the default supplier is on holiday, the PO goes out anyway. WORKFLOW: fixed steps — below level, check open POs, draft PO, approval if over 50k, wait for GRN, close. Every transition drawn on a whiteboard before go-live. A supplier saying 'we can ship half, rest in 3 weeks' matches no transition, so it lands in an exception queue. RULES ENGINE: a table procurement maintains — Audio and stock under 20, order 100 from S-500; lead_days over 7, order 1.5x; March, hold non-essentials. Business users can edit it, but a new SKU category with no rule means nothing happens, silently. AGENT: goal 'keep WH-204 in stock without over-ordering', tools for stock, open POs, quotes, forecast, approval, create_po. It sees 12 left, notices an open PO covers 50, finds the forecast needs 80 next week, gets two quotes, sees the usual supplier's lead time jumped to 14 days, picks the alternate at 5% more, and asks a human because the value crosses the threshold. Nobody wrote that sequence. The cost: tomorrow it might choose differently — hence the approval gate, the PO cap, and an eval set of past reorder situations. Close with: in a mature ERP the agent sits on top of the other three.", "Example", "Same problem, four ways: WH-204 is running low");
+  [["Scheduler", "02:00 nightly: every item below reorder level → PO for default qty at default supplier", "Supplier on holiday? The PO goes out anyway.", GREY],
+   ["Workflow", "below level → check open POs → draft PO → approval if > 50k → wait for GRN → close", "\"We can ship half, rest in 3 weeks\" matches no transition → exception queue.", GREY],
+   ["Rules engine", "Audio & stock < 20 → order 100 from S-500 · lead > 7 days → 1.5× qty · March → hold", "New SKU category with no rule → nothing happens, silently.", GREY],
+   ["Agent", "Goal: keep WH-204 in stock without over-ordering. Sees 12 left, open PO covers 50, forecast needs 80, usual supplier now 14 days → alternate at +5% → asks a human (over threshold)", "Nobody wrote that sequence. Tomorrow it may choose differently — so: approval gate, PO cap, evals.", ORANGE]].forEach(([h, a, b, c], i) => {
+    const col = i % 2, row = Math.floor(i / 2), x = 0.5 + col * 4.6, y = 1.95 + row * 1.32;
+    T.card(s, x, y, 4.4, 1.2, c === ORANGE); T.h(s, h, x + 0.2, y + 0.1, 2.5, 0.3, 13);
+    s.addText(c === ORANGE ? "DECIDES AS IT RUNS" : "DECIDED BEFORE IT RAN", { x: x + 2.0, y: y + 0.14, w: 2.2, h: 0.25, fontFace: MONO, fontSize: 7, color: c === ORANGE ? ORANGE : GREY2, align: "right", isTextBox: true, margin: 0 });
+    T.p(s, a, x + 0.2, y + 0.42, 4.0, 0.5, 9, INK); T.p(s, b, x + 0.2, y + 0.88, 4.0, 0.3, 8.5, c === ORANGE ? ORANGE : GREY);
+  });
+  T.callout(s, "IN A MATURE ERP", "the agent sits on top of the other three: the scheduler wakes it, the workflow gives it approval and audit, the rules engine sets the limits it may not break.", 0.5, 4.6, 9, 0.5);
+}
+
+// 10 where agents live in an ERP
 {
   const s = T.light("The series map. Every one of these is a loop over tools with an approval in the middle. We build them in this order: sales returns first (next episode), then MCP, then the platform concerns.", "The series", "Where agents live in an ERP");
   [["Sales / CRM", "quote-to-order · returns · lead triage", "Ep 2"], ["Inventory", "reorder · stock exceptions", "Ep 6"], ["Finance", "invoice matching · month-end reconciliation", "Ep 12, 26"],
