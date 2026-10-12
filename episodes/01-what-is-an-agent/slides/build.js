@@ -192,7 +192,25 @@ T.cover("01", "What an AI agent actually is —\nand isn't — in enterprise sof
   T.p(s, "Episodes 9, 10, 18 and 25 cover each of these in depth.", 0.5, 4.7, 9, 0.3, 10, GREY2);
 }
 
-// 12 closing
+// 13 policies vs guardrails
+{
+  const s = T.light("Policies are the rules about what the agent MAY do, written by the business. Guardrails are the mechanisms that enforce them whatever the model decides. A policy in the system prompt is a request; a guardrail in code is a guarantee. The model can be wrong, misled by an injected instruction in a customer message, or drift between versions — so every policy that matters gets a guardrail too. Walk the five layers. Then point out that Episode 2's agent already has four of them without naming them: check_return_policy encodes the thresholds, request_approval is the human gate, MAX_STEPS is a runtime cap, qty-over-sold is a tool guardrail. Input and output checks are the gap Episode 25 fills.", "Keeping it safe", "Policies vs guardrails");
+  T.card(s, 0.5, 1.95, 3.3, 2.55, true);
+  T.h(s, "Policies", 0.7, 2.08, 2.9, 0.35, 15); T.mono(s, "WRITTEN BY THE BUSINESS", 0.7, 2.42, 2.9, 0.25, 7.5, ORANGE);
+  T.p(s, "Scope — what it exists to do, what it never touches\nThresholds — auto-approve under 25,000; above needs a named approver\nData boundaries — one company; no PII in prompts or logs\nBehaviour — check policy before booking; escalate when unsure", 0.7, 2.72, 2.95, 1.4, 9.5, INK);
+  T.p(s, "Goes in the system prompt — a request, not a guarantee.", 0.7, 4.12, 2.95, 0.35, 8.5, GREY);
+  T.h(s, "Guardrails", 4.1, 1.98, 3, 0.3, 15); T.mono(s, "ENFORCED IN CODE", 6.9, 2.05, 2.6, 0.25, 7.5, ORANGE);
+  [["Input", "sanitise the request; catch injected instructions; check identity and company"],
+   ["Tool", "least privilege; schema checks; caps; tenant filter server-side; read-only by default"],
+   ["Output", "no leaked data; no invented document numbers; no claimed actions that didn't happen"],
+   ["Runtime", "step cap; cost budget; timeout; kill switch per agent"],
+   ["Human-in-the-loop", "pause on irreversible or high-value actions, with full context attached"]].forEach(([h, d], i) => {
+    const y = 2.35 + i * 0.44; T.num(s, i + 1, 4.1, y + 0.04, 0.28); T.h(s, h, 4.5, y, 1.8, 0.35, 11); T.p(s, d, 6.3, y + 0.02, 3.2, 0.42, 8.5);
+  });
+  T.callout(s, "RULE", "a policy says what it should do; a guardrail makes sure it can't do otherwise. Write both — never rely on the prompt alone. Episode 25 builds the full set.", 0.5, 4.6, 9, 0.5);
+}
+
+// 14 closing
 T.closing("Recap", [["AGENT =", "decides + loop + tools"], ["5 PARTS", "model · instructions · tools · memory · loop + limits"], ["3 BREAKPOINTS", "identity · tenancy · accountability"]],
   "Episode 2 — Build your first AI agent: a sales-returns agent for the ERP, live, in one Python file.",
   "Recap in 30 seconds, then the call to action: next episode we build the first agent live, inside the ERP.");
