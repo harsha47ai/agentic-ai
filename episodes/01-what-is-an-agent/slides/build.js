@@ -98,7 +98,25 @@ T.cover("01", "What an AI agent actually is —\nand isn't — in enterprise sof
   T.callout(s, "SAY IT", "These are often the right answer. Just don't call them agents in the architecture review.", 0.5, 4.15, 9, 0.75);
 }
 
-// 8 where agents live in an ERP
+// 8 agent vs code
+{
+  const s = T.light("The question the sceptical architect is already asking: how is this different from code, a scheduler, a rules engine? Structurally an agent IS code — a for loop calling a function. The difference is who writes the branch conditions. In code they were written before the program ran. In an agent, each branch is computed at runtime by the model from the goal and whatever the last tool returned. That buys coverage of the long tail and costs predictability — which is why limits, approvals and evals are not optional.", "The real difference", "Who writes the branch?");
+  const cols = [["", 0.5, 2.0], ["WHAT IT DECIDES", 2.5, 2.4], ["WHO WROTE THE DECISION", 4.95, 2.2], ["HANDLES THE UNEXPECTED?", 7.2, 2.3]];
+  cols.forEach(([h, x, w]) => T.mono(s, h, x, 2.05, w, 0.25, 8, ORANGE));
+  s.addShape(pres.shapes.LINE, { x: 0.5, y: 2.33, w: 9, h: 0, line: { color: LINE, width: 0.75 } });
+  [["Scheduler", "cron, Airflow", "when to run a fixed thing", "the developer", "No", GREY],
+   ["Workflow / state machine", "", "which fixed step comes next", "the developer", "No — it takes the else branch", GREY],
+   ["Rules engine", "", "from explicit rules", "the rule author", "Only cases the rules cover", GREY],
+   ["Agent", "", "from the goal + what the last tool returned", "the model, at runtime", "Yes — including cases nobody wanted", ORANGE]].forEach(([h, sub, a, b, c, col], i) => {
+    const y = 2.42 + i * 0.54;
+    if (i === 3) s.addShape(pres.shapes.RECTANGLE, { x: 0.5, y: y - 0.05, w: 9, h: 0.5, fill: { color: TINT }, line: { color: LINE, width: 0.5 } });
+    T.h(s, h, 0.6, y + 0.03, 1.9, 0.4, 12); if (sub) T.p(s, sub, 0.6, y + 0.24, 1.9, 0.25, 8, GREY2);
+    T.p(s, a, 2.5, y + 0.05, 2.4, 0.45, 10.5, INK); T.p(s, b, 4.95, y + 0.05, 2.2, 0.45, 10.5, i === 3 ? ORANGE : INK); T.p(s, c, 7.2, y + 0.05, 2.3, 0.45, 10.5, col === ORANGE ? ORANGE : GREY);
+  });
+  T.callout(s, "RULE", "code decides before it runs; an agent decides as it runs. Use a workflow whenever the rules are known, an agent only when they aren't — and pay for it with limits, approvals and evals.", 0.5, 4.55, 9, 0.6);
+}
+
+// 9 where agents live in an ERP
 {
   const s = T.light("The series map. Every one of these is a loop over tools with an approval in the middle. We build them in this order: sales returns first (next episode), then MCP, then the platform concerns.", "The series", "Where agents live in an ERP");
   [["Sales / CRM", "quote-to-order · returns · lead triage", "Ep 2"], ["Inventory", "reorder · stock exceptions", "Ep 6"], ["Finance", "invoice matching · month-end reconciliation", "Ep 12, 26"],
