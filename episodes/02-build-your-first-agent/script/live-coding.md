@@ -25,7 +25,7 @@ Target: 12–15 min. Slides for the first 5 min, live code for 6 min, enterprise
 | 5:00 | 8 | **Switch to screen.** Run `python workflow.py` — fixed steps. |
 | 5:45 | 9 | "Building your first agent" — four steps; we type only step 3. |
 | 6:15 | 10 | **Live code** the loop in `agent_starter.py` (checkpoints below). |
-| 10:30 | 10 | Run `python returns_agent.py` on A-7781, then A-7790. Narrate the tool calls. |
+| 10:30 | 10 | Run `python returns_agent.py` on SO-7781, SO-7790, then SO-7795. Narrate the tool calls. |
 | 11:30 | 11–13 | Identity, tenancy, accountability — one minute each. |
 | 14:00 | 14–15 | Recap, next episode, repo. |
 
