@@ -14,7 +14,39 @@ T.cover("02", "Build your first AI agent:\na sales-returns agent for the ERP", n
   [["Write the loop from scratch", "~15 lines: plan, done?, act + observe, limit"], ["Give it 4 ERP tools", "Sales, Approval, Inventory + Finance + CRM"], ["Watch it choose", "three cases, three different paths — one of them stops for you"]].forEach(([h, d], i) => {
     const x = 0.5 + i * 3.05; T.card(s, x, 2.0, 2.85, 1.9); T.num(s, i + 1, x + 0.25, 2.25); T.h(s, h, x + 0.25, 2.75, 2.4, 0.6, 15); T.p(s, d, x + 0.25, 3.3, 2.4, 0.5);
   });
-  T.callout(s, "SETUP", "docker compose up -d · python -m erp.seed · export ANTHROPIC_API_KEY — details in INSTRUCTIONS.md in the repo.", 0.5, 4.15, 9, 0.75);
+  T.callout(s, "THE SERIES", "every episode adds a module or an agent to one open-source ERP. Two slides on that, then we build.", 0.5, 4.15, 9, 0.75);
+}
+
+// 3 our ERP
+{
+  const s = T.light("Thirty seconds on what we are building across the series. Six modules, boring stack, two seeded companies. The one design decision to say out loud: company_id on every business table from day one.", "The ERP", "One ERP, built in public, one module at a time", EP);
+  [["Core", "companies · users — tenancy from day one"], ["Sales / CRM", "customers · sales orders · cases"], ["Inventory", "items · warehouses · stock levels · stock moves"],
+   ["Finance", "invoices · credit notes"], ["Procurement", "suppliers · purchase orders"], ["HR", "employees"]].forEach(([h, d], i) => {
+    const col = i % 3, row = Math.floor(i / 3), x = 0.5 + col * 2.15, y = 1.95 + row * 1.0;
+    T.card(s, x, y, 2.0, 0.85, i === 1); T.h(s, h, x + 0.2, y + 0.12, 1.7, 0.3, 13); T.p(s, d, x + 0.2, y + 0.45, 1.7, 0.4, 9);
+  });
+  T.card(s, 7.1, 1.95, 2.4, 2.0, true);
+  T.mono(s, "STACK", 7.3, 2.08, 2.0, 0.25, 8, ORANGE); T.p(s, "Python 3.11 · SQLAlchemy · Postgres 16 (Docker) · Claude API · MCP · MIT", 7.3, 2.33, 2.05, 0.6, 9.5, INK);
+  T.mono(s, "SEED DATA", 7.3, 2.95, 2.0, 0.25, 8, ORANGE); T.p(s, "2 companies (ACME, NORTH) · 42 customers · 50 items · 303 sales orders · 222 invoices · fixed seed", 7.3, 3.2, 2.05, 0.6, 9.5, INK);
+  T.callout(s, "RULE", "every business table carries company_id. Tenancy is a column from day one, never bolted on.", 0.5, 4.1, 9, 0.6);
+}
+
+// 4 setting up the workspace
+{
+  const s = T.light("Five minutes, once. Show each command running if you have time; otherwise show the expected output. Say the no-Docker and Windows notes. INSTRUCTIONS.md has everything.", "Setup", "Clone, start Postgres, seed, test — five minutes, once", EP);
+  [["Clone", "git clone https://github.com/harsha47ai/agentic-ai && cd agentic-ai"],
+   ["Environment", "python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt"],
+   ["Data", "docker compose up -d && python -m erp.seed      → seeded: companies=2 … sales_orders=303 … invoices=222"],
+   ["Key + tests", "cp .env.example .env  (add ANTHROPIC_API_KEY)  ·  cd episodes/02-build-your-first-agent/code && python -m pytest -q  → 14 passed"]].forEach(([h, c], i) => {
+    const y = 1.95 + i * 0.62; T.num(s, i + 1, 0.5, y + 0.08, 0.34); T.h(s, h, 1.0, y + 0.03, 1.5, 0.4, 13);
+    s.addShape(pres.shapes.RECTANGLE, { x: 2.55, y, w: 4.45, h: 0.5, fill: { color: "111111" } });
+    s.addText(c, { x: 2.7, y, w: 4.2, h: 0.5, fontFace: MONO, fontSize: 7.5, color: "E6E6E6", isTextBox: true, margin: 0, valign: "middle" });
+  });
+  T.card(s, 7.2, 1.95, 2.3, 2.4, true);
+  T.mono(s, "NO DOCKER?", 7.4, 2.08, 2.0, 0.25, 8, ORANGE); T.p(s, "DATABASE_URL=sqlite:///erp.db — everything else is identical", 7.4, 2.33, 1.95, 0.6, 9, INK);
+  T.mono(s, "WINDOWS", 7.4, 2.95, 2.0, 0.25, 8, ORANGE); T.p(s, "WSL2 + Docker Desktop", 7.4, 3.2, 1.95, 0.3, 9, INK);
+  T.mono(s, "FULL GUIDE", 7.4, 3.55, 2.0, 0.25, 8, ORANGE); T.p(s, "INSTRUCTIONS.md in the repo", 7.4, 3.8, 1.95, 0.4, 9, INK);
+  T.p(s, "Pre-seeded demo orders:  SO-7781 auto-approve  ·  SO-7790 refused  ·  SO-7795 needs a human", 0.5, 4.55, 9, 0.3, 10, GREY);
 }
 
 {

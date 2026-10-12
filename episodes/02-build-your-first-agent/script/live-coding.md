@@ -17,7 +17,9 @@ Target: 12–15 min. Slides for the first 5 min, live code for 6 min, enterprise
 
 | Time | Slide | What you do |
 | --- | --- | --- |
-| 0:00 | 1–2 | Hook: "most agents are a chatbot with a new logo". State the 3 outcomes. |
+| 0:00 | 1–2 | Hook: last time what an agent is; today one file, one key, a working agent. Three outcomes. |
+| 0:45 | 3 | The ERP in 30 seconds: six modules, boring stack, two seeded companies. Say "company_id on every table". |
+| 1:15 | 4 | Workspace setup: clone, venv, docker compose + seed, .env + pytest. Show the `14 passed`. |
 | 0:45 | 3 | Say the definition twice. Point at decides / loop / tools. |
 | 1:30 | 4 | Spectrum. Ask: who decides the control flow? |
 | 2:30 | 5 | Draw the loop. Stress stop conditions. |
