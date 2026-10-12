@@ -8,11 +8,12 @@ A sales-returns agent for the ERP. One return touches three modules: **Sales** (
 | `returns_agent.py` | The agent: a ~15-line loop over the tools, capped by `MAX_STEPS`. |
 | `agent_starter.py` | Live-coding version: same file with three TODOs where the loop goes. |
 | `workflow.py` | The same job as a fixed workflow, for the side-by-side on camera. |
-| `test_erp_tools.py` | Tool tests that run without an API key (they seed a throwaway SQLite DB). |
+| `test_erp_tools.py` | Tool tests — no API key needed (they seed a throwaway SQLite DB). |
+| `test_returns_agent.py` | Agent-loop tests: a scripted model drives the loop (plan → act → observe, stop, step limit, approval, parallel tools) — no key needed; plus two live-model tests that run when `ANTHROPIC_API_KEY` is set. |
 
 ```bash
 # one-time setup is in INSTRUCTIONS.md at the repo root (Postgres + seed)
-python -m pytest -q                                   # tools work, no key needed
+python -m pytest -q                                   # 14 tests, no key needed; 2 more run live when the key is set
 export ANTHROPIC_API_KEY=sk-ant-...
 python returns_agent.py "Customer C-1042 wants to return 2 units of WH-204 from SO-7781, arrived damaged"
 python returns_agent.py "Nova Distributors want to return all 10 monitors on SO-7790, changed their mind"

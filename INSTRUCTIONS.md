@@ -54,7 +54,7 @@ Look at the data: `docker exec -it erp-postgres psql -U erp -d erp` then e.g. `S
 
 ```bash
 cd episodes/02-build-your-first-agent/code
-python -m pytest -q                    # 7 tool tests, no API key needed
+python -m pytest -q                    # 14 tests (tools + agent loop) with no API key; 16 with ANTHROPIC_API_KEY set
 python returns_agent.py "Customer C-1042 wants to return 2 units of WH-204 from SO-7781, arrived damaged"
 python returns_agent.py "Nova Distributors want to return all 10 monitors on SO-7790, changed their mind"
 python returns_agent.py "C-1042 says all 3 monitors on SO-7795 are defective and wants to return them"
